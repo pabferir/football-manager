@@ -1,8 +1,9 @@
 package com.pabferir.web_api.controllers.player;
 
-import com.pabferir.football_manager.player.domain.entities.Player;
-import com.pabferir.football_manager.player.use_cases.AddNewPlayerService;
+import com.pabferir.football_manager.player.use_cases.interfaces.services.CreatePlayerService;
 import com.pabferir.web_api.controllers.ApiConstants;
+import com.pabferir.web_api.controllers.player.dtos.AddNewPlayerRequest;
+import com.pabferir.web_api.controllers.player.dtos.PlayerDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,15 +14,25 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(path = ApiConstants.CONTROLLER_PLAYERS)
 public class PostPlayerController {
 
-    private final AddNewPlayerService addNewPlayerService;
+    private final CreatePlayerService createPlayerService;
 
     @Autowired
-    public PostPlayerController(AddNewPlayerService addNewPlayerService) {
-        this.addNewPlayerService = addNewPlayerService;
+    public PostPlayerController(CreatePlayerService createPlayerService) {
+        this.createPlayerService = createPlayerService;
     }
 
     @PostMapping
-    public Player addNewPlayer(@RequestBody Player player) {
-        return addNewPlayerService.addNew(player);
+    public PlayerDTO addNewPlayer(@RequestBody AddNewPlayerRequest request) {
+        PlayerDTO result = createPlayerService.add(
+                request.getFirstName(),
+                request.getLastName(),
+                request.getDateOfBirth(),
+                request.getHeight(),
+                request.getCountryOfNationality(),
+                request.getJerseyNumber(),
+                request.getPlayerPositionName(),
+                request.getMarketValueInMillions());
+
+        return result;
     }
 }

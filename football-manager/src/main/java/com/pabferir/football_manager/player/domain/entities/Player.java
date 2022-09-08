@@ -1,7 +1,8 @@
 package com.pabferir.football_manager.player.domain.entities;
 
-import com.pabferir.football_manager.player.domain.enums.Nationality;
+import com.neovisionaries.i18n.CountryCode;
 import com.pabferir.football_manager.player.domain.enums.PlayerPosition;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.Period;
@@ -27,12 +28,12 @@ public class Player {
     @Transient
     private Integer age;
     private Double height;
+    @Enumerated(value = EnumType.STRING)
+    private CountryCode nationality;
     private Integer jerseyNumber;
     @Enumerated(value = EnumType.STRING)
     private PlayerPosition playerPosition;
-    @Enumerated(value = EnumType.STRING)
-    private Nationality nationality;
-    private Double marketValue;
+    private Double marketValueInMillions;
 
     //region Constructors
 
@@ -44,37 +45,37 @@ public class Player {
                   String lastName,
                   LocalDate dateOfBirth,
                   Double height,
+                  CountryCode nationality,
                   Integer jerseyNumber,
                   PlayerPosition playerPosition,
-                  Nationality nationality,
-                  Double marketValue) {
+                  Double marketValueInMillions) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.dateOfBirth = dateOfBirth;
         this.height = height;
+        this.nationality = nationality;
         this.jerseyNumber = jerseyNumber;
         this.playerPosition = playerPosition;
-        this.nationality = nationality;
-        this.marketValue = marketValue;
+        this.marketValueInMillions = marketValueInMillions;
     }
 
     public Player(String firstName,
                   String lastName,
                   LocalDate dateOfBirth,
                   Double height,
+                  CountryCode nationality,
                   Integer jerseyNumber,
                   PlayerPosition playerPosition,
-                  Nationality nationality,
-                  Double marketValue) {
+                  Double marketValueInMillions) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.dateOfBirth = dateOfBirth;
         this.height = height;
+        this.nationality = nationality;
         this.jerseyNumber = jerseyNumber;
         this.playerPosition = playerPosition;
-        this.nationality = nationality;
-        this.marketValue = marketValue;
+        this.marketValueInMillions = marketValueInMillions;
     }
 
     //endregion
@@ -125,6 +126,18 @@ public class Player {
         this.height = height;
     }
 
+    public CountryCode getNationality() {
+        return nationality;
+    }
+
+    public void setNationality(CountryCode nationality) {
+        this.nationality = nationality;
+    }
+
+    public void setNationalityFromCountryName(String countryName) {
+        this.nationality = CountryCode.findByName(countryName).get(0);
+    }
+
     public Integer getJerseyNumber() {
         return jerseyNumber;
     }
@@ -137,24 +150,28 @@ public class Player {
         return playerPosition;
     }
 
-    public void setPlayerPosition(PlayerPosition position) {
-        this.playerPosition = position;
+    public void setPlayerPosition(PlayerPosition playerPosition) {
+        this.playerPosition = playerPosition;
     }
 
-    public Nationality getNationality() {
-        return nationality;
+    public void setPlayerPositionFromPositionName(String positionName) {
+        this.playerPosition = PlayerPosition.findByPositionName(positionName);
     }
 
-    public void setNationality(Nationality nationality) {
-        this.nationality = nationality;
+    public Double getMarketValueInMillions() {
+        return marketValueInMillions;
     }
 
-    public Double getMarketValue() {
-        return marketValue;
+    public void setMarketValueInMillions(Double marketValue) {
+        this.marketValueInMillions = marketValue;
     }
 
-    public void setMarketValue(Double marketValue) {
-        this.marketValue = marketValue;
+    public String getNationalityCountryName() {
+        return nationality.getName();
+    }
+
+    public String getPlayerPositionName() {
+        return playerPosition.getName();
     }
 
     //endregion
@@ -172,7 +189,7 @@ public class Player {
                 ", jerseyNumber=" + jerseyNumber +
                 ", playerPosition=" + playerPosition +
                 ", nationality=" + nationality +
-                ", marketValue=" + marketValue +
+                ", marketValue=" + marketValueInMillions +
                 '}';
     }
 

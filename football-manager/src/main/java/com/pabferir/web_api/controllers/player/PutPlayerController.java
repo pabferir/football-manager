@@ -1,10 +1,8 @@
 package com.pabferir.web_api.controllers.player;
 
-import com.pabferir.football_manager.player.domain.entities.Player;
-import com.pabferir.football_manager.player.domain.enums.Nationality;
-import com.pabferir.football_manager.player.domain.enums.PlayerPosition;
-import com.pabferir.football_manager.player.use_cases.UpdatePlayerByIdService;
+import com.pabferir.football_manager.player.use_cases.UpdatePlayerServiceImpl;
 import com.pabferir.web_api.controllers.ApiConstants;
+import com.pabferir.web_api.controllers.player.dtos.PlayerDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,24 +12,36 @@ import java.time.LocalDate;
 @RequestMapping(path = ApiConstants.CONTROLLER_PLAYERS)
 public class PutPlayerController {
 
-    private final UpdatePlayerByIdService updatePlayerByIdService;
+    private final UpdatePlayerServiceImpl updatePlayerServiceImpl;
 
     @Autowired
-    public PutPlayerController(UpdatePlayerByIdService updatePlayerByIdService) {
-        this.updatePlayerByIdService = updatePlayerByIdService;
+    public PutPlayerController(UpdatePlayerServiceImpl updatePlayerServiceImpl) {
+        this.updatePlayerServiceImpl = updatePlayerServiceImpl;
     }
 
+    //TODO
     @PutMapping(path = "{id}")
-    public Player updatePlayerById(
+    public PlayerDTO updatePlayerById(
             @PathVariable("id") Long id,
-            @RequestParam(required = false) String firstName,
-            @RequestParam(required = false) String lastName,
-            @RequestParam(required = false) LocalDate dateOfBirth,
-            @RequestParam(required = false) Double height,
-            @RequestParam(required = false) Integer jerseyNumber,
-            @RequestParam(required = false) PlayerPosition playerPosition,
-            @RequestParam(required = false) Nationality nationality,
-            @RequestParam(required = false) Double marketValue) {
-        return updatePlayerByIdService.updateById(id, firstName, lastName, dateOfBirth, height, jerseyNumber, playerPosition, nationality, marketValue);
+            @RequestAttribute(required = false) String firstName,
+            @RequestAttribute(required = false) String lastName,
+            @RequestAttribute(required = false) LocalDate dateOfBirth,
+            @RequestAttribute(required = false) Double height,
+            @RequestAttribute(required = false) String countryOfNationality,
+            @RequestAttribute(required = false) Integer jerseyNumber,
+            @RequestAttribute(required = false) String playerPositionName,
+            @RequestAttribute(required = false) Double marketValue) {
+        PlayerDTO result = updatePlayerServiceImpl.update(
+                id,
+                firstName,
+                lastName,
+                dateOfBirth,
+                height,
+                countryOfNationality,
+                jerseyNumber,
+                playerPositionName,
+                marketValue);
+
+        return result;
     }
 }

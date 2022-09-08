@@ -1,9 +1,12 @@
 package com.pabferir.football_manager.player.use_cases;
 
+import com.neovisionaries.i18n.CountryCode;
 import com.pabferir.football_manager.player.domain.entities.Player;
-import com.pabferir.football_manager.player.domain.enums.Nationality;
 import com.pabferir.football_manager.player.domain.enums.PlayerPosition;
-import com.pabferir.football_manager.player.domain.interfaces.PlayerRepository;
+import com.pabferir.football_manager.player.use_cases.interfaces.repository.PlayerRepository;
+import com.pabferir.football_manager.player.use_cases.converters.PlayerMapper;
+import com.pabferir.football_manager.player.use_cases.interfaces.services.UpdatePlayerService;
+import com.pabferir.web_api.controllers.player.dtos.PlayerDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,25 +15,28 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 @Service
-public class UpdatePlayerByIdService {
+public class UpdatePlayerServiceImpl implements UpdatePlayerService {
 
+    private final PlayerMapper playerMapper;
     private final PlayerRepository playerRepository;
 
     @Autowired
-    public UpdatePlayerByIdService(PlayerRepository playerRepository) {
+    public UpdatePlayerServiceImpl(PlayerMapper playerMapper, PlayerRepository playerRepository) {
+        this.playerMapper = playerMapper;
         this.playerRepository = playerRepository;
     }
 
+    @Override
     @Transactional
-    public Player updateById(
+    public PlayerDTO update(
             Long id,
             String firstName,
             String lastName,
             LocalDate dateOfBirth,
             Double height,
+            String countryOfNationality,
             Integer jerseyNumber,
-            PlayerPosition playerPosition,
-            Nationality nationality,
+            String playerPositionName,
             Double marketValue) {
         Player player = playerRepository.findById(id)
                 .orElseThrow(() -> new IllegalStateException(
@@ -61,28 +67,30 @@ public class UpdatePlayerByIdService {
             player.setHeight(height);
         }
 
+        if (countryOfNationality != null &&
+                countryOfNationality.length() > 0 &&
+                !Objects.equals(countryOfNationality, player.getNationality().getName())) {
+            player.setNationality(CountryCode.findByName(countryOfNationality).get(0));
+        }
+
         if (jerseyNumber != null &&
                 jerseyNumber < 100 &&
                 !Objects.equals(jerseyNumber, player.getJerseyNumber())) {
             player.setJerseyNumber(jerseyNumber);
         }
 
-        if (playerPosition != null &&
-                !Objects.equals(playerPosition, player.getPlayerPosition())) {
-            player.setPlayerPosition(playerPosition);
-        }
-
-        if (nationality != null &&
-                !Objects.equals(nationality, player.getNationality())) {
-            player.setNationality(nationality);
+        if (playerPositionName != null &&
+                playerPositionName.length() > 0 &&
+                !Objects.equals(playerPositionName, player.getPlayerPosition().getName())) {
+            player.setPlayerPosition(PlayerPosition.findByPositionName(playerPositionName));
         }
 
         if (marketValue != null &&
                 !marketValue.equals(0.0) &&
-                !Objects.equals(marketValue, player.getMarketValue())) {
-            player.setMarketValue(marketValue);
+                !Objects.equals(marketValue, player.getMarketValueInMillions())) {
+            player.setMarketValueInMillions(marketValue);
         }
 
-        return player;
+        return playerMapper.entityToDTO(player);
     }
 }

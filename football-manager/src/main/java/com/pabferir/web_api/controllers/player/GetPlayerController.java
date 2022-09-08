@@ -1,11 +1,13 @@
 package com.pabferir.web_api.controllers.player;
 
-import com.pabferir.football_manager.player.domain.entities.Player;
-import com.pabferir.football_manager.player.use_cases.GetAllPlayersService;
-import com.pabferir.football_manager.player.use_cases.GetPlayerByIdService;
+import com.pabferir.football_manager.player.use_cases.ReadPlayerService;
 import com.pabferir.web_api.controllers.ApiConstants;
+import com.pabferir.web_api.controllers.player.dtos.PlayerDTO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -13,22 +15,31 @@ import java.util.List;
 @RequestMapping(path = ApiConstants.CONTROLLER_PLAYERS)
 public class GetPlayerController {
 
-    private final GetAllPlayersService getAllPlayersService;
-    private final GetPlayerByIdService getPlayerByIdService;
+    private final ReadPlayerService readPlayerService;
 
     @Autowired
-    public GetPlayerController(GetAllPlayersService getAllPlayersService, GetPlayerByIdService getPlayerByIdService) {
-        this.getAllPlayersService = getAllPlayersService;
-        this.getPlayerByIdService = getPlayerByIdService;
+    public GetPlayerController(ReadPlayerService readPlayerService) {
+        this.readPlayerService = readPlayerService;
     }
 
     @GetMapping
-    public List<Player> getPlayers() {
-        return getAllPlayersService.getAll();
+    public List<PlayerDTO> getPlayers() {
+        List<PlayerDTO> result = readPlayerService.getAll();
+
+        return result;
     }
 
     @GetMapping(path = "{id}")
-    public Player getPlayerById(@PathVariable("id") Long id) {
-        return getPlayerByIdService.getById(id);
+    public PlayerDTO getPlayerById(@PathVariable("id") Long id) {
+        PlayerDTO result = readPlayerService.getById(id);
+
+        return result;
+    }
+
+    @GetMapping(path = "country={countryName}")
+    public List<PlayerDTO> getPlayerByCountry(@PathVariable("countryName") String countryName) {
+        List<PlayerDTO> result = readPlayerService.getByCountry(countryName);
+
+        return result;
     }
 }
