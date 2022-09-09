@@ -1,31 +1,28 @@
-package com.pabferir.football_manager.player.use_cases;
+package com.pabferir.football_manager.player.application.use_cases;
 
 import com.neovisionaries.i18n.CountryCode;
 import com.pabferir.football_manager.player.domain.entities.Player;
 import com.pabferir.football_manager.player.domain.enums.PlayerPosition;
-import com.pabferir.football_manager.player.use_cases.interfaces.repository.PlayerRepository;
-import com.pabferir.football_manager.player.use_cases.converters.PlayerMapper;
-import com.pabferir.football_manager.player.use_cases.interfaces.services.CreatePlayerService;
-import com.pabferir.web_api.controllers.player.dtos.PlayerDTO;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.pabferir.football_manager.player.application.converters.PlayerMapper;
+import com.pabferir.football_manager.player.domain.ports.repository.PlayerRepository;
+import com.pabferir.football_manager.player.domain.ports.services.PlayerCreateService;
+import com.pabferir.web_api.controllers.player.dtos.PlayerResponse;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 
 @Service
-public class CreatePlayerServiceImpl implements CreatePlayerService {
+@AllArgsConstructor
+@Slf4j
+public class PlayerCreate implements PlayerCreateService {
 
     private final PlayerMapper playerMapper;
     private final PlayerRepository playerRepository;
 
-    @Autowired
-    public CreatePlayerServiceImpl(PlayerMapper playerMapper, PlayerRepository playerRepository) {
-        this.playerMapper = playerMapper;
-        this.playerRepository = playerRepository;
-    }
-
     @Override
-    public PlayerDTO add (
+    public PlayerResponse create(
             String firstName,
             String lastName,
             LocalDate dateOfBirth,
@@ -34,6 +31,8 @@ public class CreatePlayerServiceImpl implements CreatePlayerService {
             Integer jerseyNumber,
             String playerPositionName,
             Double marketValueInMillions) {
+        log.info("Invoked 'add' method " +
+                "from " + this.getClass().getSimpleName() + "...");
         Player player = playerRepository.save(
                 new Player(
                         firstName,
@@ -44,8 +43,8 @@ public class CreatePlayerServiceImpl implements CreatePlayerService {
                         jerseyNumber,
                         PlayerPosition.findByPositionName(playerPositionName),
                         marketValueInMillions));
+        log.info("Player with id [" + player.getId() + "] added successfully");
 
         return playerMapper.entityToDTO(player);
-
     }
 }

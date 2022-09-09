@@ -1,4 +1,4 @@
-package com.pabferir.football_manager.player.use_cases.interfaces.repository;
+package com.pabferir.football_manager.player.domain.ports.repository;
 
 import com.pabferir.football_manager.player.domain.entities.Player;
 import org.springframework.data.jpa.repository.JpaRepository;

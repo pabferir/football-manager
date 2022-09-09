@@ -1,9 +1,12 @@
 package com.pabferir.football_manager.player.domain.enums;
 
+import lombok.Getter;
+
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+@Getter
 public enum PlayerPosition {
     GK("Goalkeeper"),
     DF("Defense"),
@@ -23,10 +26,6 @@ public enum PlayerPosition {
 
     PlayerPosition(String name) {
         this.name = name;
-    }
-
-    public String getName() {
-        return name;
     }
 
     public static PlayerPosition findByPositionName(String positionName) {

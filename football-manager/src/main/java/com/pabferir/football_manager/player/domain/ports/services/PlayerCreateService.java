@@ -1,13 +1,12 @@
-package com.pabferir.football_manager.player.use_cases.interfaces.services;
+package com.pabferir.football_manager.player.domain.ports.services;
 
-import com.pabferir.web_api.controllers.player.dtos.PlayerDTO;
+import com.pabferir.web_api.controllers.player.dtos.PlayerResponse;
 
 import java.time.LocalDate;
 
-public interface UpdatePlayerService {
+public interface PlayerCreateService {
 
-    PlayerDTO update(
-            Long id,
+    PlayerResponse create(
             String firstName,
             String lastName,
             LocalDate dateOfBirth,
@@ -15,5 +14,5 @@ public interface UpdatePlayerService {
             String countryOfNationality,
             Integer jerseyNumber,
             String playerPositionName,
-            Double marketValue);
+            Double marketValueInMillions);
 }

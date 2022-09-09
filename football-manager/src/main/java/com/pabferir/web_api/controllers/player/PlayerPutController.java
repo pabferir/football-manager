@@ -1,27 +1,25 @@
 package com.pabferir.web_api.controllers.player;
 
-import com.pabferir.football_manager.player.use_cases.UpdatePlayerServiceImpl;
+import com.pabferir.football_manager.player.domain.ports.services.PlayerUpdateService;
 import com.pabferir.web_api.controllers.ApiConstants;
-import com.pabferir.web_api.controllers.player.dtos.PlayerDTO;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.pabferir.web_api.controllers.player.dtos.PlayerResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 
 @RestController
+@AllArgsConstructor
+@Tag(name = "Player PUT Controller")
 @RequestMapping(path = ApiConstants.CONTROLLER_PLAYERS)
-public class PutPlayerController {
+public class PlayerPutController {
 
-    private final UpdatePlayerServiceImpl updatePlayerServiceImpl;
-
-    @Autowired
-    public PutPlayerController(UpdatePlayerServiceImpl updatePlayerServiceImpl) {
-        this.updatePlayerServiceImpl = updatePlayerServiceImpl;
-    }
+    private final PlayerUpdateService updatePlayerService;
 
     //TODO
     @PutMapping(path = "{id}")
-    public PlayerDTO updatePlayerById(
+    public PlayerResponse updatePlayerById(
             @PathVariable("id") Long id,
             @RequestAttribute(required = false) String firstName,
             @RequestAttribute(required = false) String lastName,
@@ -31,7 +29,7 @@ public class PutPlayerController {
             @RequestAttribute(required = false) Integer jerseyNumber,
             @RequestAttribute(required = false) String playerPositionName,
             @RequestAttribute(required = false) Double marketValue) {
-        PlayerDTO result = updatePlayerServiceImpl.update(
+        PlayerResponse result = updatePlayerService.update(
                 id,
                 firstName,
                 lastName,
