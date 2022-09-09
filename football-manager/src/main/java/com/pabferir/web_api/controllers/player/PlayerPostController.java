@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @AllArgsConstructor
 @Tag(name = "Player POST Controller")
-@RequestMapping(path = ApiConstants.CONTROLLER_PLAYERS)
+@RequestMapping(path = ApiConstants.PLAYER_CONTROLLER)
 public class PlayerPostController {
 
     private final PlayerCreateService playerCreateService;

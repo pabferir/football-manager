@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @AllArgsConstructor
 @Tag(name = "Player DELETE Controller")
-@RequestMapping(path = ApiConstants.CONTROLLER_PLAYERS)
+@RequestMapping(path = ApiConstants.PLAYER_CONTROLLER)
 public class PlayerDeleteController {
 
     private final PlayerDeleteService playerDeleteService;

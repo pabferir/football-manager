@@ -12,7 +12,7 @@ import java.time.LocalDate;
 @RestController
 @AllArgsConstructor
 @Tag(name = "Player PUT Controller")
-@RequestMapping(path = ApiConstants.CONTROLLER_PLAYERS)
+@RequestMapping(path = ApiConstants.PLAYER_CONTROLLER)
 public class PlayerPutController {
 
     private final PlayerUpdateService updatePlayerService;

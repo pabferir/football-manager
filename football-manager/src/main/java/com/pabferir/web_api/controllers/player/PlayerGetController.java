@@ -15,7 +15,7 @@ import java.util.List;
 @RestController
 @AllArgsConstructor
 @Tag(name = "Player GET Controller")
-@RequestMapping(path = ApiConstants.CONTROLLER_PLAYERS)
+@RequestMapping(path = ApiConstants.PLAYER_CONTROLLER)
 public class PlayerGetController {
 
     private final PlayerReadService playerReadService;
