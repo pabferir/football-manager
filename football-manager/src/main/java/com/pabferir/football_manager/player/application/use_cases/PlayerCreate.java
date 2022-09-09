@@ -31,20 +31,24 @@ public class PlayerCreate implements PlayerCreateService {
             Integer jerseyNumber,
             String playerPositionName,
             Double marketValueInMillions) {
-        log.info("Invoked 'add' method " +
-                "from " + this.getClass().getSimpleName() + "...");
-        Player player = playerRepository.save(
-                new Player(
-                        firstName,
-                        lastName,
-                        dateOfBirth,
-                        height,
-                        CountryCode.findByName(countryOfNationality).get(0),
-                        jerseyNumber,
-                        PlayerPosition.findByPositionName(playerPositionName),
-                        marketValueInMillions));
+        log.info("Invoked 'add' method from " + this.getClass().getSimpleName() + "...");
+        Player player;
+        try {
+            player = playerRepository.save(new Player(
+                    firstName,
+                    lastName,
+                    dateOfBirth,
+                    height,
+                    CountryCode.findByName(countryOfNationality).get(0),
+                    jerseyNumber,
+                    PlayerPosition.findByPositionName(playerPositionName),
+                    marketValueInMillions));
+        } catch (Exception ex) {
+            log.error("Could not create player " + lastName + ", " + firstName, ex);
+            throw ex;
+        }
         log.info("Player with id [" + player.getId() + "] added successfully");
-
+        //TODO service layer should not know about a Response object
         return playerMapper.entityToDTO(player);
     }
 }

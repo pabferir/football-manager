@@ -1,9 +1,9 @@
 package com.pabferir.football_manager.player.application.use_cases;
 
 import com.neovisionaries.i18n.CountryCode;
+import com.pabferir.football_manager.player.application.converters.PlayerMapper;
 import com.pabferir.football_manager.player.domain.entities.Player;
 import com.pabferir.football_manager.player.domain.enums.PlayerPosition;
-import com.pabferir.football_manager.player.application.converters.PlayerMapper;
 import com.pabferir.football_manager.player.domain.ports.repository.PlayerRepository;
 import com.pabferir.football_manager.player.domain.ports.services.PlayerUpdateService;
 import com.pabferir.web_api.controllers.player.dtos.PlayerResponse;
@@ -40,60 +40,68 @@ public class PlayerUpdate implements PlayerUpdateService {
                 .orElseThrow(() -> new IllegalStateException(
                         "Couldn't find Player with id [" + id + "] in the Database."));
 
-        //TODO move validation logic to Request Validator
+        //TODO move validation logic to Request Validator?
         if (firstName != null &&
                 firstName.length() > 0 &&
                 !Objects.equals(player.getFirstName(), firstName)) {
-            log.info("Updating Player.firstName from " + player.getFirstName() + " to " + firstName + "...");
+            log.info("Updating Player.firstName from " + player.getFirstName() +
+                    " to " + firstName + "...");
             player.setFirstName(firstName);
         }
 
         if (lastName != null &&
                 lastName.length() > 0 &&
                 !Objects.equals(player.getLastName(), lastName)) {
-            log.info("Updating Player.lastName from " + player.getLastName() + " to " + lastName + "...");
+            log.info("Updating Player.lastName from " + player.getLastName() +
+                    " to " + lastName + "...");
             player.setLastName(lastName);
         }
 
         if (dateOfBirth != null &&
                 !dateOfBirth.isAfter(LocalDate.now()) &&
                 !dateOfBirth.isEqual(player.getDateOfBirth())) {
-            log.info("Updating Player.dateOfBirth from " + player.getDateOfBirth() + " to " + dateOfBirth + "...");
+            log.info("Updating Player.dateOfBirth from " + player.getDateOfBirth() +
+                    " to " + dateOfBirth + "...");
             player.setDateOfBirth(dateOfBirth);
         }
 
         if (height != null &&
                 !height.equals(0.0) &&
                 !Objects.equals(height, player.getHeight())) {
-            log.info("Updating Player.height from " + player.getHeight() + " to " + height + "...");
+            log.info("Updating Player.height from " + player.getHeight() +
+                    " to " + height + "...");
             player.setHeight(height);
         }
 
         if (countryOfNationality != null &&
                 countryOfNationality.length() > 0 &&
                 !Objects.equals(countryOfNationality, player.getNationality().getName())) {
-            log.info("Updating Player.nationality from " + player.getNationalityCountryName() + " to " + countryOfNationality + "...");
+            log.info("Updating Player.nationality from " + player.getNationalityCountryName() +
+                    " to " + countryOfNationality + "...");
             player.setNationality(CountryCode.findByName(countryOfNationality).get(0));
         }
 
         if (jerseyNumber != null &&
                 jerseyNumber < 100 &&
                 !Objects.equals(jerseyNumber, player.getJerseyNumber())) {
-            log.info("Updating Player.jerseyNumber from " + player.getJerseyNumber() + " to " + jerseyNumber + "...");
+            log.info("Updating Player.jerseyNumber from " + player.getJerseyNumber() +
+                    " to " + jerseyNumber + "...");
             player.setJerseyNumber(jerseyNumber);
         }
 
         if (playerPositionName != null &&
                 playerPositionName.length() > 0 &&
                 !Objects.equals(playerPositionName, player.getPlayerPosition().getName())) {
-            log.info("Updating Player.position from " + player.getPlayerPositionName() + " to " + playerPositionName + "...");
+            log.info("Updating Player.position from " + player.getPlayerPositionName() +
+                    " to " + playerPositionName + "...");
             player.setPlayerPosition(PlayerPosition.findByPositionName(playerPositionName));
         }
 
         if (marketValueInMillions != null &&
                 !marketValueInMillions.equals(0.0) &&
                 !Objects.equals(marketValueInMillions, player.getMarketValueInMillions())) {
-            log.info("Updating Player.marketValueInMillions from " + player.getMarketValueInMillions() + " to " + marketValueInMillions + "...");
+            log.info("Updating Player.marketValueInMillions from " + player.getMarketValueInMillions() +
+                    " to " + marketValueInMillions + "...");
             player.setMarketValueInMillions(marketValueInMillions);
         }
 

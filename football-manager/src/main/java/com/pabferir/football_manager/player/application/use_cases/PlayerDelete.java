@@ -20,10 +20,16 @@ public class PlayerDelete implements PlayerDeleteService {
     @Override
     public PlayerResponse deleteById(Long id) {
         log.info("Invoked 'deleteById' method from " + this.getClass().getSimpleName() + "...");
-        Player player = playerRepository.findById(id)
-                .orElseThrow(() -> new IllegalStateException(
-                        "Couldn't find Player with id [" + id + "] in the Database."));
-        playerRepository.deleteById(id);
+        Player player;
+        try {
+            player = playerRepository.findById(id)
+                    .orElseThrow(() -> new IllegalStateException(
+                            "Couldn't find Player with id [" + id + "] in the Database."));
+            playerRepository.deleteById(id);
+        } catch (Exception ex) {
+            log.error("Could not delete Player with id [" + id + "]", ex);
+            throw ex;
+        }
         log.info("Player with id [" + player.getId() + "] deleted successfully");
 
         return playerMapper.entityToDTO(player);
