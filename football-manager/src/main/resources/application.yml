@@ -1,0 +1,17 @@
+spring:
+    datasource:
+        jdbc-url: jdbc:postgresql://localhost:5432/sports-manager-db
+        password: admin_pass_1234
+        username: postgres
+    jpa:
+        hibernate:
+            ddl-auto: update
+        open-in-view: true
+        properties:
+            hibernate:
+                dialect: org.hibernate.dialect.PostgreSQLDialect
+                format_sql: true
+                jdbc:
+                    lob:
+                        non_contextual_creation: true
+        show-sql: true
