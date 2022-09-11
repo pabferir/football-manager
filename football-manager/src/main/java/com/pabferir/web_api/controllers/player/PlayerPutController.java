@@ -1,45 +1,47 @@
 package com.pabferir.web_api.controllers.player;
 
-import com.pabferir.football_manager.player.domain.ports.services.PlayerUpdateService;
+import com.pabferir.football_manager.player.application.ports.in.PlayerUpdateService;
+import com.pabferir.football_manager.player.domain.PlayerAggregate;
 import com.pabferir.web_api.controllers.ApiConstants;
 import com.pabferir.web_api.controllers.player.dtos.PlayerResponse;
+import com.pabferir.web_api.controllers.player.dtos.UpdatePlayerRequest;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-
-import java.time.LocalDate;
 
 @RestController
 @AllArgsConstructor
 @Tag(name = "Player PUT Controller")
 @RequestMapping(path = ApiConstants.PLAYER_CONTROLLER)
 public class PlayerPutController {
-
-    private final PlayerUpdateService updatePlayerService;
+    private final PlayerUpdateService playerUpdateService;
 
     //TODO
     @PutMapping(path = "{id}")
-    public PlayerResponse updatePlayerById(
-            @PathVariable("id") Long id,
-            @RequestAttribute(required = false) String firstName,
-            @RequestAttribute(required = false) String lastName,
-            @RequestAttribute(required = false) LocalDate dateOfBirth,
-            @RequestAttribute(required = false) Double height,
-            @RequestAttribute(required = false) String countryOfNationality,
-            @RequestAttribute(required = false) Integer jerseyNumber,
-            @RequestAttribute(required = false) String playerPositionName,
-            @RequestAttribute(required = false) Double marketValue) {
-        PlayerResponse result = updatePlayerService.update(
+    public PlayerResponse updatePlayerById(@PathVariable("id") Long id, @RequestBody UpdatePlayerRequest request) {
+        PlayerAggregate result = playerUpdateService.update(
                 id,
-                firstName,
-                lastName,
-                dateOfBirth,
-                height,
-                countryOfNationality,
-                jerseyNumber,
-                playerPositionName,
-                marketValue);
+                request.firstName(),
+                request.lastName(),
+                request.dateOfBirth(),
+                request.height(),
+                request.countryOfNationality(),
+                request.jerseyNumber(),
+                request.playerPositionName(),
+                request.currentValueInMillions(),
+                request.lastValueUpdate());
 
-        return result;
+        return new PlayerResponse(
+                result.getId(),
+                result.getFirstName(),
+                result.getLastName(),
+                result.getDateOfBirth(),
+                result.getAge(),
+                result.getHeight(),
+                result.getCountryName(),
+                result.getJerseyNumber(),
+                result.getPositionName(),
+                result.getCurrentValueInMillions(),
+                result.getLastValueUpdate());
     }
 }

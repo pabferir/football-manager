@@ -1,6 +1,7 @@
 package com.pabferir.web_api.controllers.player;
 
-import com.pabferir.football_manager.player.domain.ports.services.PlayerDeleteService;
+import com.pabferir.football_manager.player.application.ports.in.PlayerDeleteService;
+import com.pabferir.football_manager.player.domain.PlayerAggregate;
 import com.pabferir.web_api.controllers.ApiConstants;
 import com.pabferir.web_api.controllers.player.dtos.PlayerResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -10,18 +11,51 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @RestController
 @AllArgsConstructor
 @Tag(name = "Player DELETE Controller")
 @RequestMapping(path = ApiConstants.PLAYER_CONTROLLER)
 public class PlayerDeleteController {
-
     private final PlayerDeleteService playerDeleteService;
+
+    @DeleteMapping
+    public List<PlayerResponse> deleteAll() {
+        List<PlayerAggregate> result = playerDeleteService.deleteAll();
+
+        return result.stream()
+                .map((p) -> new PlayerResponse(
+                        p.getId(),
+                        p.getFirstName(),
+                        p.getLastName(),
+                        p.getDateOfBirth(),
+                        p.getAge(),
+                        p.getHeight(),
+                        p.getCountryName(),
+                        p.getJerseyNumber(),
+                        p.getPositionName(),
+                        p.getCurrentValueInMillions(),
+                        p.getLastValueUpdate()))
+                .collect(Collectors.toList());
+    }
 
     @DeleteMapping(path = "{id}")
     public PlayerResponse deletePlayerById(@PathVariable("id") Long id) {
-        PlayerResponse result = playerDeleteService.deleteById(id);
+        PlayerAggregate result = playerDeleteService.deleteById(id);
 
-        return result;
+        return new PlayerResponse(
+                result.getId(),
+                result.getFirstName(),
+                result.getLastName(),
+                result.getDateOfBirth(),
+                result.getAge(),
+                result.getHeight(),
+                result.getCountryName(),
+                result.getJerseyNumber(),
+                result.getPositionName(),
+                result.getCurrentValueInMillions(),
+                result.getLastValueUpdate());
     }
 }

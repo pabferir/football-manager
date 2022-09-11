@@ -1,19 +1,16 @@
 package com.pabferir.web_api.controllers.player.dtos;
 
-import lombok.Data;
-
 import java.time.LocalDate;
 
-@Data
-public class PlayerResponse {
-    private Long id;
-    private String firstName;
-    private String lastName;
-    private LocalDate dateOfBirth;
-    private Integer age;
-    private Double height;
-    private String nationality;
-    private Integer jerseyNumber;
-    private String playerPosition;
-    private Double marketValueInMillions;
+public record PlayerResponse(Long id,
+                             String firstName,
+                             String lastName,
+                             LocalDate dateOfBirth,
+                             Integer age,
+                             Double height,
+                             String countryOfNationality,
+                             Integer jerseyNumber,
+                             String playerPositionName,
+                             Double currentValueInMillions,
+                             LocalDate lastValueUpdate) {
 }
