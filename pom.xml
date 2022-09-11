@@ -67,12 +67,6 @@
 		<!--- ##############################################################-->
 
 		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-			<optional>true</optional>
-		</dependency>
-
-		<dependency>
 			<groupId>com.neovisionaries</groupId>
 			<artifactId>nv-i18n</artifactId>
 			<version>1.29</version>
@@ -99,6 +93,12 @@
 			<scope>runtime</scope>
 		</dependency>
 
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+
 <!--		<dependency>-->
 <!--			<groupId>org.flywaydb</groupId>-->
 <!--			<artifactId>flyway-core</artifactId>-->
@@ -119,6 +119,16 @@
 <!--			<artifactId>spring-security-test</artifactId>-->
 <!--			<scope>test</scope>-->
 <!--		</dependency>-->
+
+		<!--- ##############################################################-->
+		<!--- Cross-cutting dependencies                                    #-->
+		<!--- ##############################################################-->
+
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<optional>true</optional>
+		</dependency>
 
 	</dependencies>
 

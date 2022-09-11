@@ -1,0 +1,19 @@
+spring:
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    url: jdbc:postgresql://localhost:5432/sports-manager-db
+    driver-class-name: org.postgresql.Driver
+    username: postgres
+    password: admin_pass_1234
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    open-in-view: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+        jdbc:
+          lob:
+            non_contextual_creation: true
+    show-sql: true
