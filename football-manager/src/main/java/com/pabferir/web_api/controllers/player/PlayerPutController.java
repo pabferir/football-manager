@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 public class PlayerPutController {
     private final PlayerUpdateService playerUpdateService;
 
-    //TODO
     @PutMapping(path = "{id}")
     public PlayerResponse updatePlayerById(@PathVariable("id") Long id, @RequestBody UpdatePlayerRequest request) {
         PlayerAggregate result = playerUpdateService.update(
