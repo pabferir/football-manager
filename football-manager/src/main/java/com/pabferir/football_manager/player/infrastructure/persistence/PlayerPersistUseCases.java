@@ -1,22 +1,22 @@
-package com.pabferir.football_manager.player.infrastructure.repository;
+package com.pabferir.football_manager.player.infrastructure.persistence;
 
-import com.pabferir.football_manager.player.application.ports.out.PlayerRepository;
+import com.pabferir.football_manager.player.application.ports.out.PlayerPersistService;
 import com.pabferir.football_manager.player.domain.PlayerAggregate;
 import com.pabferir.football_manager.player.infrastructure.helpers.PlayerMapper;
 import com.pabferir.football_manager.player.infrastructure.table_mapping.PlayerTableEntity;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-@Repository
+@Service
 @AllArgsConstructor
 @Slf4j
-public class PlayerPostgreSQLRepository implements PlayerRepository {
+public class PlayerPersistUseCases implements PlayerPersistService {
     private final PlayerMapper playerMapper;
     private final PlayerJpaRepository playerJpaRepository;
 

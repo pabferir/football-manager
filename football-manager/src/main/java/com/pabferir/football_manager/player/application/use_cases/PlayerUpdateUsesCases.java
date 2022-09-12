@@ -1,7 +1,7 @@
 package com.pabferir.football_manager.player.application.use_cases;
 
 import com.pabferir.football_manager.player.application.ports.in.PlayerUpdateService;
-import com.pabferir.football_manager.player.application.ports.out.PlayerRepository;
+import com.pabferir.football_manager.player.application.ports.out.PlayerPersistService;
 import com.pabferir.football_manager.player.domain.PlayerAggregate;
 import com.pabferir.football_manager.player.domain.PlayerAggregateBuilder;
 import lombok.AllArgsConstructor;
@@ -13,8 +13,8 @@ import java.time.LocalDate;
 @Service
 @AllArgsConstructor
 @Slf4j
-public class PlayerUpdate implements PlayerUpdateService {
-    private final PlayerRepository playerRepository;
+public class PlayerUpdateUsesCases implements PlayerUpdateService {
+    private final PlayerPersistService playerPersistService;
 
     @Override
     public PlayerAggregate update(Long id,
@@ -28,7 +28,7 @@ public class PlayerUpdate implements PlayerUpdateService {
                                   Double currentValueInMillions,
                                   LocalDate lastValueUpdate) {
         log.info("Invoked 'update' method from " + this.getClass().getSimpleName() + "...");
-        PlayerAggregate storedState = playerRepository.selectById(id)
+        PlayerAggregate storedState = playerPersistService.selectById(id)
                 .orElseThrow(() -> new IllegalStateException(
                         "Couldn't find Player with id [" + id + "] in the Database."));
 
@@ -50,7 +50,7 @@ public class PlayerUpdate implements PlayerUpdateService {
                 " to " + updatedState);
         PlayerAggregate result;
         try {
-            result = playerRepository.update(updatedState);
+            result = playerPersistService.update(updatedState);
         } catch (Exception ex) {
             log.error("Could not update Player with id [" + id + "]", ex);
             throw ex;

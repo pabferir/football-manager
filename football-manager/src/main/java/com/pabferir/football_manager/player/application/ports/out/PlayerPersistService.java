@@ -5,7 +5,7 @@ import com.pabferir.football_manager.player.domain.PlayerAggregate;
 import java.util.Collection;
 import java.util.Optional;
 
-public interface PlayerRepository {
+public interface PlayerPersistService {
     PlayerAggregate insert(PlayerAggregate playerAggregate);
     Collection<PlayerAggregate> selectAll();
     Optional<PlayerAggregate> selectById(Long id);

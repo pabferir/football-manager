@@ -1,4 +1,4 @@
-package com.pabferir.football_manager.player.infrastructure.repository;
+package com.pabferir.football_manager.player.infrastructure.persistence;
 
 import com.pabferir.football_manager.player.infrastructure.table_mapping.PlayerTableEntity;
 import org.springframework.data.jpa.repository.JpaRepository;

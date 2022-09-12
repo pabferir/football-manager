@@ -10,7 +10,6 @@ import java.time.LocalDate;
 @AggregateBuilder
 @Getter(AccessLevel.PACKAGE)
 public class PlayerAggregateBuilder {
-
     private Player player;
     private CountryCode nationality;
     private Integer jerseyNumber;

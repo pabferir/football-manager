@@ -10,13 +10,11 @@ import java.time.Period;
 @Aggregate
 @EqualsAndHashCode
 public class PlayerAggregate {
-
     private final Player player;
     private final CountryCode nationality;
     private final Integer jerseyNumber;
     private final PositionCode position;
     private final MarketValue marketValue;
-
 
     PlayerAggregate(PlayerAggregateBuilder builder) {
         this.player = builder.getPlayer();

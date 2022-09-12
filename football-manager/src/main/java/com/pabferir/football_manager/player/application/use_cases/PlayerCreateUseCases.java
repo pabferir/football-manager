@@ -1,7 +1,7 @@
 package com.pabferir.football_manager.player.application.use_cases;
 
 import com.pabferir.football_manager.player.application.ports.in.PlayerCreateService;
-import com.pabferir.football_manager.player.application.ports.out.PlayerRepository;
+import com.pabferir.football_manager.player.application.ports.out.PlayerPersistService;
 import com.pabferir.football_manager.player.domain.PlayerAggregate;
 import com.pabferir.football_manager.player.domain.PlayerAggregateBuilder;
 import lombok.AllArgsConstructor;
@@ -13,8 +13,8 @@ import java.time.LocalDate;
 @Service
 @AllArgsConstructor
 @Slf4j
-public class PlayerCreate implements PlayerCreateService {
-    private final PlayerRepository playerRepository;
+public class PlayerCreateUseCases implements PlayerCreateService {
+    private final PlayerPersistService playerPersistService;
 
     @Override
     public PlayerAggregate create(String firstName,
@@ -36,7 +36,7 @@ public class PlayerCreate implements PlayerCreateService {
                 .build();
         PlayerAggregate result;
         try {
-            result = playerRepository.insert(player);
+            result = playerPersistService.insert(player);
         } catch (Exception ex) {
             log.error("Could not create player " + lastName + ", " + firstName, ex);
             throw ex;
